@@ -96,6 +96,8 @@
 		        <div class="card shadow mb-4">
 				    <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
 				    	<h4 class="m-0 font-weight-bold tdesign">Profit</h4>
+	    		    	<button type="button" class="btn me-2 btn-light">Edit</button>
+
 				    </div>
 				</div>
 			</div>
@@ -104,6 +106,7 @@
 			        <div class="card shadow mb-4">
 					    <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
 					    	<h4 class="m-0 font-weight-bold tdesign">Expenses</h4>
+					    	<button type="button" class="btn me-2 btn-light">Edit</button>
 					           
 					    </div>
 					</div>
@@ -112,7 +115,7 @@
 			        <div class="card shadow mb-4">
 					    <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
 					    	<h4 class="m-0 font-weight-bold tdesign">Sales</h4>
-					           
+					        <button type="button" class="btn me-2 btn-light">Edit</button>   
 					    </div>
 					</div>
 				</div>
@@ -135,10 +138,10 @@
 			      <li><a class="dropdown-item" href="#">Z-A</a></li>
 			    </ul>
 			 </div>
-			 <div class="input-group">
-				    <div class="input-group-text" id="search">?</div>
-				    <input type="text" class="form-control" placeholder="Search" aria-label="Search" aria-describedby="search">
-			 </div>
+			 <form class="d-flex">
+      <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
+      <button class="btn btn-outline-success" type="submit">Search</button>
+    </form>
 			</div>
 			<div class="chart">
 				<table class="table table-hover">
@@ -180,7 +183,7 @@
 		<div class="people container">
 			<p class="h1">PEOPLE<p>
 				<div class="card col-3 pips">
-				  <img src="pic.png" class="card-img-top" alt="PIC" style="width:100px;">
+				  <img src="pic.png" class="card-img-top rounded mx-auto d-block" alt="PIC" style="width:100px;">
 
 				  <div class="card-body">
 				    <h5 class="card-title">NAME</h5>
