@@ -30,65 +30,76 @@
 
     .img{
     	margin: auto;
-    	padding: 0px 0px 0px 80px;
-       
     }
+    
 	</style>
 </head>
 <body>
-<link rel="stylesheet" type="text/css">
+    
     <div class="container main">
+
+        <!-- flash message show when successful sign up  -->
+        {% for message in get_flashed_messages() %}      
+        <div class="alert alert-success alert-dismissible fade show" role="alert" style="text-align: center;"><h6>
+            {{ message }} {{ username|capitalize }}. User added successfuly, <a href="{{url_for('login')}}" class="alert-link">click to go back to the login page.</a>
+            <!-- <button type="button" class="close" data-bs-dismiss="alert" aria-label="Close"> -->
+            <!-- <span aria-hidden="true">&times;</span> -->
+            </button></h6>
+        </div>
+        {% endfor%}
+
         <div class="row align-items-start">
             <div class="col img">
-                <img class="mt-2 mb-4" src="{{ url_for('static', filename='../static/image/logobg.png')}}" alt="ShelfLab Logo" height="100" >
+                <img class="mt-2 mb-4 mx-auto d-block" src="{{ url_for('static', filename='../static/image/logobg.png')}}" alt="ShelfLab Logo" height="120" >
             </div>
-        <div class="col">
 
-          <form method="POST" >
-            <div class="border-3 cform">
+            <div class="col">
+            <form method="POST" >
+                <div class="border-3 cform">
+                    <h2 style="color: #ee6810; font-size: 25px;">SIGN UP</h2>
+                    <!-- <label class="sr-only fs-5 align-baseline"  for="email">E-MAIL ADDRESS</label>
+                    <input type="text" id="email" class="form-control mb-3" name="email" placeholder="E-Mail Address" aria-describedby="basic-addon1" required autofocus> -->
+                    
+                    {{ form.hidden_tag() }}
 
-                <!-- <label class="sr-only fs-5 align-baseline"  for="email">E-MAIL ADDRESS</label>
-                <input type="text" id="email" class="form-control mb-3" name="email" placeholder="E-Mail Address" aria-describedby="basic-addon1" required autofocus> -->
-                
-                {{ form.email.label(class="form-labe sr-only fs-5 align-baseline") }}        
-                {{ form.email(class="form-control mb-3") }}                                  
+                    {{ form.email.label(class="form-label sr-only fs-5 align-baseline") }}        
+                    {{ form.email(class="form-control mb-3") }}                                  
 
-                <!-- <label class="sr-only fs-5 align-baseline"  for="Username">USERNAME</label>
-                <input type="text" id="Username" class="form-control mb-3" name="Username" placeholder="Username" aria-describedby="basic-addon1" required autofocus> -->
+                    <!-- <label class="sr-only fs-5 align-baseline"  for="Username">USERNAME</label>
+                    <input type="text" id="Username" class="form-control mb-3" name="Username" placeholder="Username" aria-describedby="basic-addon1" required autofocus> -->
 
-                {{ form.username.label(class="form-label sr-only fs-5 align-baseline") }}
-                {{ form.username(class="form-control mb-3") }}
-                
-                <!-- <label for="pword" class="sr-only fs-5 ">PASSWORD</label>
-                <input type="password" name="pword" id="pword" placeholder="Password" class="form-control mb-3"> -->
-                
-                {{ form.password.label(class="form-label sr-only fs-5") }}
-                {{ form.password(class="form-control  mb-3") }}
+                    {{ form.username.label(class="form-label sr-only fs-5 align-baseline") }}
+                    {{ form.username(class="form-control mb-3") }}
+                    
+                    <!-- <label for="pword" class="sr-only fs-5 ">PASSWORD</label>
+                    <input type="password" name="pword" id="pword" placeholder="Password" class="form-control mb-3"> -->
+                    
+                    {{ form.password.label(class="form-label sr-only fs-5") }}
+                    {{ form.password(class="form-control  mb-3") }}
 
-                <!-- <label for="cpword" class="sr-only fs-5 ">CONFIRM PASSWORD</label>
-                <input type="password" name="cpword" id="cpword" placeholder="Confirm Password" class="form-control mb-3"> -->
+                    <!-- <label for="cpword" class="sr-only fs-5 ">CONFIRM PASSWORD</label>
+                    <input type="password" name="cpword" id="cpword" placeholder="Confirm Password" class="form-control mb-3"> -->
 
-                {{ form.confirmpassword.label(class="form-label sr-only fs-5") }}
-                {{ form.confirmpassword(class="form-control mb-3") }}
+                    {{ form.confirmpassword.label(class="form-label sr-only fs-5") }}
+                    {{ form.confirmpassword(class="form-control mb-3") }}
 
-                <div class="mt-3 text-center">
-                    {{ form.submit(class="btn btn-lg btn-primary btn-block") }}
-                <a class="btn btn-lg btn-light border border-dark" href="{{url_for('login')}}" role="button">Cancel</a>
-                </div>
+                    <div class="mt-3 text-center">
+                        {{ form.submit(class="btn btn-lg btn-primary btn-block") }}
+                    <a class="btn btn-lg btn-light border border-dark" href="{{url_for('login')}}" role="button">Cancel</a>
+                    </div>
 
                     <!-- <button class="btn btn-lg btn-primary btn-block">Sign Up</button> -->
                     <!-- <a class="btn btn-lg btn-light border border-dark" href="{{url_for('login')}}" role="button">Cancel</a> -->
+                </div>  
+            </form>
 
-            </div>  
-          </form>
-
-          <div>
-              {% for our_users in our_users %}
+            <div>
+                {% for our_users in our_users %}
                 {{ our_user.id }} {{ our_user.username }} {{ our_user.email }} <br/>
-              {% endfor%}
-          </div>
+                {% endfor%}
+            </div>
 
-        </div>
+            </div>
         </div>
     </div>
 </body>
