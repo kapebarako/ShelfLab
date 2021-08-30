@@ -1,0 +1,206 @@
+<!DOCTYPE html> 
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-KyZXEAg3QhqLMpG8r+8fhAXLRk2vvoC2f3B09zVXn8CA5QIVfZOJ3BCsw2P0p/We" crossorigin="anonymous">
+    <link rel="icon"  href="{{ url_for('static', filename='../static/image/icon.png')}}">
+    <title>Shelf Lab | Home</title>
+    <style type="text/css">
+    body{
+    	background-color: #02385d;
+    	color: #e7e7e7;
+    	padding: 10px;
+    }
+    .userphoto{
+    	margin: 0 30px;
+    }
+    .side{
+    	width: 20%;
+    	background-color: #12989c;
+    	color: #02385d;
+    	padding: 20px;
+    	height: 650px;
+    	position: fixed;
+    }
+    .nbar{
+    	background-color: #ee6810;
+    	margin: 5px;
+    	margin-left: 21%;
+    	position: absolute;
+    	width: 75%;
+    }
+    .tdesign{
+    	color: #ee6810;
+    }
+    .canvas{
+    	margin-left: 21%;
+    	
+    }
+    span:hover, .edit:hover{
+    	color: #ee6810;
+    }
+    .pos{
+    	margin-top: 100px;
+    }
+    .Products button{
+    	background-color: #12989c;
+    	color: white;
+
+    }
+    .chart, th{
+    	background-color: #a6a6a7;
+    	color: #02385d;
+    	width: 950px;
+    	margin: 10px 20px;
+    }
+    .pips{
+    	background-color: #a6a6a6;
+    	color: black;
+    	padding: 5px;
+    }
+    </style>
+
+</head>
+<body>
+<link rel="stylesheet" type="text/css">
+	<nav class="nbar navbar navbar-light topbar static-top ">
+	  <div class="container-fluid ">
+	    <span class="navbar-brand h1"><strong>Overview</strong></span>
+	    
+	  </div>
+	</nav>
+	<!-- Left Nav -->
+    <div class="navbar-nav side sidebar-divider align-middle font-monospace ">
+    	<img src="{{ url_for('static', filename='../static/image/logobg.png')}}">
+    	<h2 class="align-middle">Username</h2>
+      	<img src="{{ url_for('static', filename='../static/image/pic.png')}}" style="width:100px; height: 100px;" alt="User" class="userphoto">
+        <h4>Welcome to Shelflab, {{ name|capitalize }}!</h4>  
+      	<p ><a href="" class="text-light fs-5" >Edit Profile</a></p>
+        <ul class="nav flex-column">
+		  <li class="nav-item ">
+		    <a class="nav-link active text-light text-decoration-none fs-2" aria-current="page" href="#"><span>Overview</span></a>
+		  </li>
+		  <li class="nav-item">
+		    <a class="nav-link text-light text-decoration-none fs-2" href="#"><span>Management</span></a>
+		  </li>
+		  <li class="nav-item">
+		    <a class="nav-link text-light text-decoration-none fs-2" href="#"><span>Stock Alert</span></a>
+		  </li>
+		</ul>
+        <h2 style="margin-top: 150px;"><a href="" class="text-light text-decoration-none fs-2 mt-3"><span>Settings</span></a></h2>
+    </div>
+    
+    <div class="canvas">
+	    <!--Sections-->
+	    <div class="pos container">
+		    <div class="p-3  sec col-xl-10 ">
+		        <div class="card shadow mb-4">
+				    <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+				    	<h4 class="m-0 font-weight-bold tdesign">Profit</h4>
+	    		    	<button type="button" class="edit btn me-2 btn-light">Edit</button>
+
+				    </div>
+				</div>
+			</div>
+			<div class="row align-items-center">
+				<div class="p-3 sec col-4">
+			        <div class="card shadow mb-4">
+					    <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+					    	<h4 class="m-0 font-weight-bold tdesign">Expenses</h4>
+					    	<button type="button" class="edit btn me-2 btn-light">Edit</button>
+					           
+					    </div>
+					</div>
+				</div>
+				<div class="p-3 sec col-4">
+			        <div class="card shadow mb-4">
+					    <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+					    	<h4 class="m-0 font-weight-bold tdesign">Sales</h4>
+					        <button type="button" class="edit btn me-2 btn-light">Edit</button>   
+					    </div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<!--End of Section-->
+		<!--Products-->
+		<div class="Products btn-toolbar" role = "toolbar">
+			<div class="btn" aria-label="selection">
+			  <button type="button" class="btn ">All Products</button>
+			  <button type="button" class="btn ">Sort</button>
+
+			  <div class="btn">
+			    <button id="filter" type="button" class="btn dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="true">
+			      Filter
+			    </button>
+			    <ul class="dropdown-menu" aria-labelledby="filter">
+			      <li><a class="dropdown-item" href="#">Most Recent</a></li>
+			      <li><a class="dropdown-item" href="#">A-Z</a></li>
+			      <li><a class="dropdown-item" href="#">Z-A</a></li>
+			    </ul>
+			 </div>
+			 <form class="d-flex">
+      <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
+      <button class="btn btn-outline-success" type="submit">Search</button>
+    </form>
+			</div>
+			<div class="chart">
+				<table class="table table-hover">
+				  <thead>
+				    <tr>
+				      <th scope="col">Product #</th>
+				      <th scope="col">Name</th>
+				      <th scope="col">Stock</th>
+				      <th scope="col">Price</th>
+				      <th scope="col">Category</th>
+				      <th scope="col">Color</th>
+
+				    </tr>
+				  </thead>
+				  <tbody>
+				    <tr>
+				      <th scope="row">0001</th>
+				      <td>Product101</td>
+				      <td>199</td>
+				      <td>999.99</td>
+				      <td>Electronics</td>
+				      <td>Black</td>
+				    </tr>
+				    <tr>
+				      <th scope="row">0002</th>
+				      <td>Product102</td>
+				      <td>299</td>
+				      <td>999.99</td>
+				      <td>Electronics</td>
+				      <td>White</td>
+				    </tr>
+				    
+				  </tbody>
+				</table>
+			</div>
+		</div>	  
+		<!--End of Products-->
+		<!--People-->
+		<div class="people container">
+			<p class="h1">PEOPLE<p>
+				<div class="card col-3 pips">
+				  <img src="{{ url_for('static', filename='../static/image/pic.png')}}" class="card-img-top rounded mx-auto d-block" alt="PIC" style="width:100px;">
+
+				  <div class="card-body">
+				    <h5 class="card-title">NAME</h5>
+				    <p class="card-text">POSITION</p>
+				    <p class="card-text">DEPARTMENT</p>
+				    <p class="card-text">EMPLOYEE NUMBER</p>
+				    <a href="#" class="btn btn-primary">MORE INFO</a>
+				  </div>
+				</div>
+		</div>
+		<!--End of People-->
+
+	
+
+    
+
+</body>
+</html>

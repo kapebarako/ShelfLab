@@ -8,7 +8,7 @@ from datetime import  datetime
 from enum import unique		#
 
 # Notes:
-# Missing:		 Remember me (Login) , Forgot Password, Database
+# Missing:		 Remember me (Login), Database
 # env\Scripts\activate 
 # python "test.py"   ---> debug on
 

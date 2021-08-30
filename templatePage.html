@@ -12,20 +12,18 @@
     <link rel="icon"  href="{{ url_for('static', filename='../static/image/icon.png')}}">
 
     <!-- CSS -->
-    {% block css %}
-    {% endblock %}
+    <!-- {% block css %}
+    {% endblock %} -->
   </head>
 
   <body>
     <div class="main">
-        <form action="#" method="post">
             <div class="imgcontainer">
               <img class="mt-2 mb-4" src="{{ url_for('static', filename='../static/image/logobg.png')}}" alt="ShelfLab Logo" height="100" >
             </div>
         {% block content %}
 
         {% endblock %}
-        </form>
     </div>
 
     <!-- Optional JavaScript -->
