@@ -6,6 +6,9 @@ from wtforms.validators import DataRequired, InputRequired, Length, Email, Equal
 from flask_sqlalchemy import SQLAlchemy 
 from datetime import  datetime
 from enum import unique		#
+import re			# regex
+from string import printable #special char
+import string
 
 # Notes:
 # Missing:		 Remember me (Login), Database
@@ -15,32 +18,25 @@ from enum import unique		#
 
 # Create a Flask Instance
 app = Flask(__name__, template_folder='template')
-# Add database
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///users.db'
+# Add database									username:passwrod@localhost/db name		
+app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql://root:password123@localhost/users'
 # Secret Key
 app.config['SECRET_KEY'] = 'ilabshelflove'
-
-
-# SQLALCHEMY_TRACK_MODIFICATIONS = False
-# bootstrap = Bootstrap(app)
 
 # Initialize the Database
 db = SQLAlchemy(app)
 
-
-# Create Model for SQLA
-class Users(db.Model):                                            
-	id = db.Column(db.Integer, primary_key=True)
-	name = db.Column(db.String(100), nullable=False)
-	email = db.Column(db.String(100), nullable=False, unique=True)
-	date_added = db.Column(db.DateTime, default=datetime.utcnow)
+# # # Create Model for SQLA
+# class Users(db.Model):                                            
+# 	id = db.Column(db.Integer, primary_key=True)
+# 	name = db.Column(db.String(100), nullable=False)
+# 	email = db.Column(db.String(100), nullable=False, unique=True)
+# 	date_added = db.Column(db.DateTime, default=datetime.utcnow)
 	
-	def __repr__(self):
-		return '<Name %r>' % self.name
+# 	def __repr__(self):
+# 		return '<Name %r>' % self.name
 
-
-
-#  Signup Form Class   /userform tutoiral
+#  Signup Form Class   /userform tutorial
 class SignupForm(FlaskForm):
 	email = StringField("E-MAIL ADDRESS", validators=[DataRequired(), Length(min=2, max=20)])
 	username = StringField("USERNAME", validators=[DataRequired(), Length(min=2, max=20)])
@@ -48,7 +44,6 @@ class SignupForm(FlaskForm):
 	confirmpassword = PasswordField('CONFIRM PASSWORD', validators=[DataRequired()])
 	submit = SubmitField("Sign Up")
 	
-
 #  Login Form Class
 class LoginForm(FlaskForm):
 	username = StringField("Username: ", validators=[DataRequired(), Length(min=2, max=20)])
@@ -59,38 +54,33 @@ class LoginForm(FlaskForm):
 #  Forgot Password Form Class
 class forgotPassword(FlaskForm):
 	email = StringField("E-MAIL ADDRESS", validators=[DataRequired(), Length(min=2, max=20)])
-	# password = PasswordField('Password', validators=[DataRequired()])
-	# remember = BooleanField('Remember Me')
 	submit = SubmitField("Continue")
 
 #############
 
-
-# Sign up Form      /add
+# Sign up Form
 @app.route('/signup', methods=['GET','POST'])
 def signup():
 	account = None
-	username = None								# for line78
+	username = None		
+	email = None
+	password = None
+	confirmpassword = None
 	form = SignupForm()
-	# Validating input
-	if form.validate_on_submit():   
-		account = form.email.data 				#successfully added then will clear the form
-		username = form.username.data			# will get the username to display
-		form.email.data = ''															
-		form.username.data = ''															
-		form.password.data = ''
-		form.confirmpassword.data = ''
-		flash("Welcome to Shelflab,")  		# message that will flash
-		
-		# our_users = Users.query.order_by(Users.date_added)
-
-	# 	user = Users.query.filter_by(email=form.username.data).first()
-	# 	if user is None:					# username not exist
-	# 		user = Users(email=form.email.data, username=form.username.data, password=form.password.data, confirmpassword=form.confirmpassword.data) #inputs from signup.html
-	# 		db.session.add(user)
-	# 		db.session.commit()
-	return render_template("signup.html", form=form, account=account, username=username) # our_users=our_users
-
+	username = form.username.data
+	email = form.email.data
+	password = form.password.data
+	confirmpassword = form.confirmpassword.data
+	if form.validate_on_submit():
+			# account = Users.query.filter_by(email=form.email.data).first()
+			# account = Users(username = form.username.data, email = form.email.data, password = form.password.data)
+			# db.session.add(account)
+			# db.session.commit()
+			form.email.data = ''			# clearing the form after submitting								
+			form.username.data = ''															
+			flash(f"Welcome to Shelflab, {username.capitalize()}. User added successfuly!")  # message that will flash
+			# <a href="{{url_for('login')}}" class="alert-link">click to go back to the login page.</a>"
+	return render_template("signup.html", form=form, account=account, username=username, password=password, confirmpassword=confirmpassword, email=email) #our_users=our_users
 
 # Login Form
 @app.route("/", methods=["POST", "GET"])
@@ -98,20 +88,12 @@ def login():
     return render_template('login.html')
 
 # ForgotPassword Form
-# @app.route("/forgotpassword")
-# def forgotpassword():
-# 	return render_template("signup.html")
-
 @app.route("/forgotpassword")
 def forgotpassword():
     return render_template('forgotPassword.html')
 
-# @app.route("/template")			
-# def template():
-# 	return render_template("homePage.html",title="Template",posts=posts)
-
 # Homepage when login
-@app.route("/<name>")	#, methods=['GET', 'POST']		
+@app.route("/<name>")
 def user(name):
 	return render_template("homePage.html", name=name)
 
