@@ -41,7 +41,7 @@
         <!-- flash message show when successful sign up  -->
         {% for message in get_flashed_messages() %}
         <div class="alert alert-success alert-dismissible fade show" role="alert" style="text-align: center;"><h6>
-            {{ message }}. Click <a href="{{url_for('login')}}">here</a> to go back to the Login Page</h6>
+            {{ message }} Click <a href="{{url_for('login')}}">here</a> to go back to the Login Page</h6>
         </div>
         {% endfor %}
 
@@ -57,17 +57,17 @@
                 <div class="border-3 cform">
                     <h2 style="color: #ee6810; font-size: 25px;">SIGN UP</h2>
                     
-                    {{ form.hidden_tag() }}
+                    {{ form.hidden_tag() }}     <!-- to show the flash message -->
 
                     <label class="form-label sr-only fs-5 align-baseline" for="email">E-MAIL ADDRESS</label>
                     <input type="email" id="email" class="form-control mb-3" name="email" placeholder="shelflab@email.com" required autofocus>
                     
 
-                    <label for="username" class="control-label  sr-only fs-5 align-baseline">USERNAME</label>
-                    <input type="text" pattern="^[_A-z0-9]{1,}$" class="form-control mb-3" id="username" placeholder="username" name="username" required>
+                    <label for="username" class="control-label sr-only fs-5 align-baseline">USERNAME</label>
+                    <input type="text" pattern="^[_A-z0-9]{1,}$" class="form-control mb-3" id="username" placeholder="username" name="username" oninvalid="this.setCustomValidity('Use a-z, A-Z and numbers only!')" required>
 
                     <label for="password" class="sr-only fs-5 ">PASSWORD</label>
-                    <input type="password" name="password" id="pw" placeholder="password" class="form-control mb-3" required>
+                    <input type="password" name="password" id="pw" placeholder="password" class="form-control mb-3" minlength="6" required>
                       
                     <label for="confirmpassword" class="sr-only fs-5 ">CONFIRM PASSWORD</label>
                     <input type="password" name="confirmpassword" id="confirmpassword" placeholder="confirm password" class="form-control mb-3" data-match="#pw" data-match-error="Whoops, these don't match" required>     
