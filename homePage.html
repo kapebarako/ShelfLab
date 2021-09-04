@@ -4,8 +4,7 @@
 	<meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-KyZXEAg3QhqLMpG8r+8fhAXLRk2vvoC2f3B09zVXn8CA5QIVfZOJ3BCsw2P0p/We" crossorigin="anonymous">
-    <link rel="icon"  href="{{ url_for('static', filename='../static/image/icon.png')}}">
-    <title>Shelf Lab | Home</title>
+    <title>Shelf Lab | HOME</title>
     <style type="text/css">
     body{
     	background-color: #02385d;
@@ -59,8 +58,8 @@
     	color: black;
     	padding: 5px;
     }
-    </style>
 
+	</style>
 </head>
 <body>
 <link rel="stylesheet" type="text/css">
@@ -72,10 +71,9 @@
 	</nav>
 	<!-- Left Nav -->
     <div class="navbar-nav side sidebar-divider align-middle font-monospace ">
-    	<img src="{{ url_for('static', filename='../static/image/logobg.png')}}">
+    	<img src="logobg.png" height="75px">
     	<h2 class="align-middle">Username</h2>
-      	<img src="{{ url_for('static', filename='../static/image/pic.png')}}" style="width:100px; height: 100px;" alt="User" class="userphoto">
-        <h4>Welcome to Shelflab, {{ name|capitalize }}!</h4>  
+      	<img src="pic.png" style="width:100px; height: 100px;" alt="user" class="userphoto">
       	<p ><a href="" class="text-light fs-5" >Edit Profile</a></p>
         <ul class="nav flex-column">
 		  <li class="nav-item ">
@@ -90,7 +88,6 @@
 		</ul>
         <h2 style="margin-top: 150px;"><a href="" class="text-light text-decoration-none fs-2 mt-3"><span>Settings</span></a></h2>
     </div>
-    
     <div class="canvas">
 	    <!--Sections-->
 	    <div class="pos container">
@@ -185,7 +182,7 @@
 		<div class="people container">
 			<p class="h1">PEOPLE<p>
 				<div class="card col-3 pips">
-				  <img src="{{ url_for('static', filename='../static/image/pic.png')}}" class="card-img-top rounded mx-auto d-block" alt="PIC" style="width:100px;">
+				  <img src="pic.png" class="card-img-top rounded mx-auto d-block" alt="PIC" style="width:100px;">
 
 				  <div class="card-body">
 				    <h5 class="card-title">NAME</h5>
