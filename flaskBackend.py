@@ -1,47 +1,61 @@
-from flask import Flask, redirect, url_for, render_template, request, flash
+from flask import Flask, redirect, url_for, render_template, request, flash, session
+from datetime import timedelta
 from flask_bootstrap import Bootstrap
 from flask_wtf import FlaskForm
 from wtforms import StringField, PasswordField, BooleanField, SubmitField
 from wtforms.validators import DataRequired, InputRequired, Length, Email, EqualTo
 from flask_sqlalchemy import SQLAlchemy 
-from datetime import  datetime
+from datetime import datetime
 from enum import unique		#
 import re			# regex
 from string import printable #special char
 import string
+import csv
+import sqlite3
+import os
+import sqlalchemy as db
+# engine = db.create_engine('dialect+driver://user:pass@host:port/db')
 
 # Notes:
 # Missing:		 Remember me (Login), Database
 # env\Scripts\activate 
-# python "test.py"   ---> debug on
+# python flaskBackend.py   ---> debug on
+# pop up t&c pp
+
 
 
 # Create a Flask Instance
 app = Flask(__name__, template_folder='template')
-# Add database									username:passwrod@localhost/db name		
-app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql://root:password123@localhost/users'
 # Secret Key
-app.config['SECRET_KEY'] = 'ilabshelflove'
-
+app.secret_key = "ilabshelflove"
+# Add database								     username:password@localhost/db name		
+app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql://root:Gonzales2001@localhost/shelflab'
+app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+# Sessions timer
+app.permanent_session_lifetime = timedelta(minutes=5)
 # Initialize the Database
 db = SQLAlchemy(app)
 
-# # # Create Model for SQLA
-# class Users(db.Model):                                            
-# 	id = db.Column(db.Integer, primary_key=True)
-# 	name = db.Column(db.String(100), nullable=False)
-# 	email = db.Column(db.String(100), nullable=False, unique=True)
-# 	date_added = db.Column(db.DateTime, default=datetime.utcnow)
-	
-# 	def __repr__(self):
-# 		return '<Name %r>' % self.name
+# python -i     	# for winpty python
+
+# Create Model for SQLA
+class users(db.Model):                                            
+	uid = db.Column(db.Integer, primary_key=True) 					# must be autoincrement
+	email = db.Column(db.String(100), nullable=False, unique=True)
+	username = db.Column(db.String(100), nullable=False)
+	password = db.Column(db.String(100), nullable=False)
+	date_added = db.Column(db.DateTime, default=datetime.utcnow) 	# added
+
+
+	def __repr__(self):
+		return '<Name %r>' % self.username
+
 
 #  Signup Form Class   /userform tutorial
 class SignupForm(FlaskForm):
 	email = StringField("E-MAIL ADDRESS", validators=[DataRequired(), Length(min=2, max=20)])
 	username = StringField("USERNAME", validators=[DataRequired(), Length(min=2, max=20)])
 	password = PasswordField('PASSWORD', validators=[DataRequired()])
-	confirmpassword = PasswordField('CONFIRM PASSWORD', validators=[DataRequired()])
 	submit = SubmitField("Sign Up")
 	
 #  Login Form Class
@@ -58,59 +72,84 @@ class forgotPassword(FlaskForm):
 
 #############
 
+accounts = []
+
+@app.route("/accounts",	methods=["POST","GET"])
+def accounts():
+    return render_template("accounts.html", accounts=accounts)
+
 # Sign up Form
-@app.route('/signup', methods=['GET','POST'])
+@app.route("/signup", methods=["GET","POST"]) # get post?
 def signup():
-	account = None
-	username = None		
-	email = None
-	password = None
-	confirmpassword = None
 	form = SignupForm()
 	username = form.username.data
-	email = form.email.data
-	password = form.password.data
-	confirmpassword = form.confirmpassword.data
+	email = request.form.get("email")
+	username = request.form.get("username")
+	password = request.form.get("password")
 	if form.validate_on_submit():
-			# account = Users.query.filter_by(email=form.email.data).first()
-			# account = Users(username = form.username.data, email = form.email.data, password = form.password.data)
-			# db.session.add(account)
-			# db.session.commit()
-			form.email.data = ''			# clearing the form after submitting								
-			form.username.data = ''															
-			flash(f"Welcome to Shelflab, {username.capitalize()}. User added successfuly!")  # message that will flash
-			# <a href="{{url_for('login')}}" class="alert-link">click to go back to the login page.</a>"
-	return render_template("signup.html", form=form, account=account, username=username, password=password, confirmpassword=confirmpassword, email=email) #our_users=our_users
+		# user = users.query.filter_by(email=form.email.data).first()
+		# if user is None:
+			# accounts.append(username)
+			user = users(email=form.email.data, username=form.username.data, password=form.password.data)
+			db.session.add(user)
+			db.session.commit()
+			flash(f"Welcome to Shelflab, {username.capitalize()}. User added successfuly!")
+			# return redirect(url_for("accounts"), form=form)	
+	our_users = users.query.order_by(users.date_added)
+	return render_template("signup.html", form=form, accounts=accounts, username=username, password=password, email=email, our_users=our_users)
 
 # Login Form
 @app.route("/", methods=["POST", "GET"])
 def login():
-    return render_template('login.html')
+	if request.method == "POST":
+		session.permanent = True
+		user = request.form['username']
+		session['user'] = user
+		return redirect(url_for('user'))
+	else:
+		if "user" in session:
+			return redirect(url_for('user'))
+		return render_template('login.html')
+
+# Homepage when login
+@app.route("/homepage")
+def user():
+	if 'user' in session:
+		user = session['user']
+		return render_template("overview.html", name=user)
+	else:								# login again
+		return redirect(url_for('login'))
+
+@app.route("/logout")
+def logout():
+	session.pop('user', None)
+	return redirect(url_for("login"))
+
 
 # ForgotPassword Form
 @app.route("/forgotpassword")
 def forgotpassword():
     return render_template('forgotPassword.html')
 
-# Homepage when login
-@app.route("/<name>")
-def user(name):
-	return render_template("homePage.html", name=name)
-
 # defaultTemplate
 @app.route("/template")			
 def template():
 	return render_template("templatePage.html")
 
+@app.route("/termsnconditions")			
+def termsncondition():
+	return render_template("termsnconditions.html")
+
 @app.errorhandler(404)
 def page_not_found(e):
-    return render_template("404.html"), 404
+    # return render_template(""), 404
+	return "Error 404, Not Found"
 
 @app.errorhandler(500)
 def page_not_found(e):
-    return render_template("500.html"), 500
-
+    # return render_template("500.html"), 500
+	return "Error 500, Internal Server Error"
 
 if __name__ == "__main__":
 	# db.create_all()
-	app.run(debug=True, use_reloader=False)
+	app.run(debug=True, use_reloader=False)	
