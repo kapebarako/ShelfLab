@@ -13,11 +13,10 @@ import string
 import csv
 import sqlite3
 import os
+import smtplib
 import sqlalchemy as db
-# engine = db.create_engine('dialect+driver://user:pass@host:port/db')
 
 # Notes:
-# Missing:		 Remember me (Login), Database
 # env\Scripts\activate 
 # python flaskBackend.py   ---> debug on
 # pop up t&c pp
@@ -53,15 +52,15 @@ class users(db.Model):
 
 #  Signup Form Class   /userform tutorial
 class SignupForm(FlaskForm):
-	email = StringField("E-MAIL ADDRESS", validators=[DataRequired(), Length(min=2, max=20)])
-	username = StringField("USERNAME", validators=[DataRequired(), Length(min=2, max=20)])
-	password = PasswordField('PASSWORD', validators=[DataRequired()])
+	email = StringField("E-MAIL ADDRESS")
+	username = StringField("USERNAME")
+	password = PasswordField('PASSWORD')
 	submit = SubmitField("Sign Up")
 	
 #  Login Form Class
 class LoginForm(FlaskForm):
-	username = StringField("Username: ", validators=[DataRequired(), Length(min=2, max=20)])
-	password = PasswordField('Password', validators=[DataRequired()])
+	username = StringField("Username: ")
+	password = PasswordField("Password")
 	remember = BooleanField('Remember Me')
 	submit = SubmitField("Login")
 
@@ -72,11 +71,9 @@ class forgotPassword(FlaskForm):
 
 #############
 
-accounts = []
-
-@app.route("/accounts",	methods=["POST","GET"])
-def accounts():
-    return render_template("accounts.html", accounts=accounts)
+# @app.route("/accounts",	methods=["POST","GET"])
+# def accounts():
+#     return render_template("accounts.html", accounts=accounts)
 
 # Sign up Form
 @app.route("/signup", methods=["GET","POST"]) # get post?
@@ -93,10 +90,13 @@ def signup():
 			user = users(email=form.email.data, username=form.username.data, password=form.password.data)
 			db.session.add(user)
 			db.session.commit()
+			server= smtplib.SMTP("smtp.gmail.com", 587)
+			server.starttls()
+			server.login("shelflab.ue@gmail.com","IlabShelflove") 	# for logging account  (username,pw)
+			server.sendmail("shelflab.ue@gmail.com", email, "Your account is successfully created!")
 			flash(f"Welcome to Shelflab, {username.capitalize()}. User added successfuly!")
-			# return redirect(url_for("accounts"), form=form)	
 	our_users = users.query.order_by(users.date_added)
-	return render_template("signup.html", form=form, accounts=accounts, username=username, password=password, email=email, our_users=our_users)
+	return render_template("signup.html", form=form, username=username, password=password, email=email, our_users=our_users)
 
 # Login Form
 @app.route("/", methods=["POST", "GET"])
